@@ -5,12 +5,15 @@ import java.util.HashMap;
 
 public class GroceryRepository {
 
-    HashMap<Integer, GroceryItem> store = new HashMap<>();
-    ArrayList<Integer> ids = new ArrayList<>();
-    private int nextNumber = 0;
+    //선언 및 초기화 동시에 함.
+    private final HashMap<Integer, GroceryItem> store = new HashMap<>();
+    private final ArrayList<Integer> ids = new ArrayList<>();
+    private int nextNumber = 1;
 
-    int nextId(){
-        return nextNumber += 1;
+    public int nextId() {
+        int id = nextNumber;
+        nextNumber = nextNumber + 1;
+        return id;
     }
 
     void save(GroceryItem item){
@@ -18,32 +21,29 @@ public class GroceryRepository {
         ids.add(item.getId());
     }
 
+    //예외를 던지는 메서드는 다른 메서드의 '사전 검증기'로 가볍게 호출해서 재사용
     GroceryItem findById(int id){
-        //id != ids.get(id-1)가 아니었어. 왜지??
-        if(!store.containsKey(id)){
-            throw new IllegalArgumentException("장을 찾을 수 없습니다. = " + id);
+        GroceryItem found = store.get(id);
+        if (found == null) {
+            throw new IllegalArgumentException("장을 찾을 수 없습니다. 번호=" + id);
         }
-        return store.get(id);
+        return found;
     }
 
     ArrayList<GroceryItem> findByAll(){
         ArrayList<GroceryItem> lists = new ArrayList<>();
-        for (GroceryItem id : store.values()){
-            lists.add(id);
+
+        //for문 : HashMap은 데이터 순서 보장하지 않음. Arraylist를 활용.
+        for (int i = 0; i < ids.size(); i++) {
+            lists.add(store.get(ids.get(i)));
         }
         return lists;
     }
 
-    //Map.get(key) = 벨류값을 줌.
-    //Map.values = 벨류값 전체
-
     void replace(GroceryItem item){
-        //findById() 호출이 null이 될 수 있다고 함. 무슨 소리지
-        //위에 저거 뭐라고 말하더라. 암튼 item이 곧 GroceryItem이니 해당 class를 끌어올 수 있는 것.
-        int id = item.getId();
-        if (findById(id)!=null){
-            store.put(id, item);
-        }
+        //findById()에서 검증을 받을 수 있음
+        findById(item.getId());
+        store.put(item.getId(), item);
     }
 
     void delete(int id){
