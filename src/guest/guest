@@ -1,0 +1,36 @@
+[핵심 학습 내용]
+- 클래스와 객체
+- private 필드와 getter
+- 생성자
+- `ArrayList`와 `for`문
+- `if`, `else if`, `else`
+- `throw`와 `try-catch`
+- Controller–Service–Repository의 기본 역할
+
+
+
+[요구사항]
+-main
+저장소·서비스·컨트롤러 연결
+Guest 객체
+
+-저장소
+ArrayList
+객체 저장
+조회(1인, 전원)
+
+-서비스
+이름 입력 규칙 검사
+저장소에게 요청: 등록, 조회(1인, 전원)
+
+-컨트롤러
+키보드 입력
+화면 출력
+Guest를 getter로 호출
+
+
+
+
+[흐름]
+손님 초대 -> 등록 ->
+    조회(순서대로) -> 없을 시 예외처리
